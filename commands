@@ -1,0 +1,10 @@
+autogrid4.exe -p a.gpf -l a.glg
+autodock4.exe -p a.dpf -l a.dlg
+
+
+grep '^DOCKED' a.dlg | cut -c9- >a.pdbqt  
+./mnt/d/vina_split.exe --input a.pdbqt
+mv a.pdbqt complex.pdbqt
+grep "Estimated Free Energy of Binding" a_*.pdbqt
+
+vina.exe --receptor receptor.pdbqt --ligand ligand.pdbqt --center_x 14.642 --center_y 20.976 --center_z 8.807 --size_x 80 --size_y 58 --size_z 16 --log output.log --out output.pdbqt
