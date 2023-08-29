@@ -1,8 +1,38 @@
 import os
+def log_to_xyz(log_filename, xyz_filename, code):
+    with open(log_filename, 'r') as f:
+        lines = f.readlines()
 
-def log_to_xyz(log_filename, xyz_filename):
-    # Sözlüğü kullanarak atom numaralarını atom isimleriyle eşleştirme
-    code = {"1" : "H", "2" : "He", "3" : "Li", "4" : "Be", "5" : "B", 
+    rotation_line_index = next(i for i, line in enumerate(lines) if 'Rotational constants (GHZ)' in line)
+    start_line_index = rotation_line_index - 1
+    while not "----" in lines[start_line_index]:
+        start_line_index -= 1
+    end_line_index = start_line_index - 1
+    while not "----" in lines[end_line_index]:
+        end_line_index -= 1
+    section = lines[end_line_index + 1 : start_line_index]
+
+    atoms = []
+    for line in section:
+        parts = line.split()
+        atom_num = parts[1]
+        x, y, z = map(float, parts[3:6])
+        atom_name = code.get(atom_num, "X")
+        atoms.append((atom_name, x, y, z))
+
+    with open(xyz_filename, "w") as xyz_file:
+        xyz_file.write(f"{len(atoms)}\n")
+        xyz_file.write("Converted from Gaussian log\n")
+        for atom in atoms:
+            xyz_file.write(f"{atom[0]}  {atom[1]:.6f}  {atom[2]:.6f}  {atom[3]:.6f}\n")
+
+    print(f"Conversion from {log_filename} to {xyz_filename} completed!")
+
+# Kullanıcıdan hangi dosya uzantılarını çevireceğini sormak için
+file_extension = input("Lütfen dönüştürmek istediğiniz dosya uzantısını girin (örn: log, LOG, OUT, out): ")
+
+# Atom kodları için sözlük
+code = {"1" : "H", "2" : "He", "3" : "Li", "4" : "Be", "5" : "B", 
 "6"  : "C", "7"  : "N", "8"  : "O", "9" : "F", "10" : "Ne",
 "11" : "Na" , "12" : "Mg" , "13" : "Al" , "14" : "Si" , "15" : "P", 
 "16" : "S"  , "17" : "Cl" , "18" : "Ar" , "19" : "K"  , "20" : "Ca",
@@ -27,47 +57,8 @@ def log_to_xyz(log_filename, xyz_filename):
 "111": "Rg" ,"112" : "Uub","113" : "Uut","114" : "Uuq","115" : "Uup",
 "116": "Uuh","117" : "Uus","118" : "Uuo"} 
 
-    with open(log_filename, 'r') as f:
-        lines = f.readlines()
-
-    # "Rotational constants (GHZ)" satırının indeksini bul
-    rotation_line_index = next(i for i, line in enumerate(lines) if 'Rotational constants (GHZ)' in line)
-
-    # Üstündeki "-------" satırını bul
-    start_line_index = rotation_line_index - 1
-    while not "----" in lines[start_line_index]:
-        start_line_index -= 1
-
-    # Bir üstündeki "-------" satırını bul
-    end_line_index = start_line_index - 1
-    while not "----" in lines[end_line_index]:
-        end_line_index -= 1
-
-    # İstenilen aralığı çıkar
-    section = lines[end_line_index + 1 : start_line_index]
-
-    # Veriyi parçalayıp atom bilgilerini elde edin
-    atoms = []
-    for line in section:
-        parts = line.split()
-        atom_num = parts[1]
-        x, y, z = map(float, parts[3:6])
-        atom_name = code.get(atom_num, "X")  # Eğer bilinmeyen bir atom numarası varsa, default olarak "X" kullanılır
-        atoms.append((atom_name, x, y, z))
-
-    # .xyz formatına dönüştürme
-    with open(xyz_filename, "w") as xyz_file:
-        xyz_file.write(f"{len(atoms)}\n")
-        xyz_file.write("Converted from Gaussian log\n")
-        for atom in atoms:
-            xyz_file.write(f"{atom[0]}  {atom[1]:.6f}  {atom[2]:.6f}  {atom[3]:.6f}\n")
-
-    print(f"Conversion from {log_filename} to {xyz_filename} completed!")
-
-# Şu anda sadece bir dosya için çalıştırıyoruz.
-directory_path = "."  # Şu anki dizini belirtiyor; isterseniz başka bir dizin yolu belirleyebilirsiniz.
+directory_path = "."  
 
 for filename in os.listdir(directory_path):
-    if filename.endswith(".log"):
-        log_to_xyz(filename, filename.replace(".log", ".xyz"))
-
+    if filename.endswith(f".{file_extension}"):
+        log_to_xyz(filename, filename.replace(f".{file_extension}", ".xyz"), code)
