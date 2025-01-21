@@ -1,6 +1,5 @@
 @echo on
 setlocal enabledelayedexpansion
-
 :: Tüm PDBQT dosyalarını döngüye al
 for %%f in (*.pdbqt) do (
     :: Dosya adını al (uzantısız)
@@ -21,4 +20,4 @@ for %%f in (*.pdbqt) do (
 )
 
 echo Tum dosyalar islendi
-pause
+pause 
