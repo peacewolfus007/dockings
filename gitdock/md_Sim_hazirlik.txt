@@ -1,0 +1,159 @@
+
+ new command : 
+source leaprc.protein.ff19sb
+source leaprc.gaff2
+receptor=loadpdb rec1.pdb
+ligand=loadmol2 ligand1.mol2
+complex= combine { receptor ligand }
+set default PBRadii mbondi2 
+savepdb complex complex.pdb
+saveamberparm ligand ligand.prmtop ligand.crd
+saveamberparm protein protein.prmtop protein.crd
+saveamberparm complex complex.prmtop complex.crd
+source leaprc.water.opc
+solvatebox complex OPCBOX 10.0
+charge complex
+addions complex Cl- 0
+charge complex
+savepdb complex complex.pdb
+saveamberparm complex complex_su.prmtop complex_su.crd
+quit
+
+ new command : 
+source leaprc.protein.ff19sb
+source leaprc.gaff2
+receptor=loadpdb rec1.pdb
+ligand=loadmol2 ligand1.mol2
+complex= combine { receptor ligand }
+set default PBRadii mbondi2 
+savepdb complex complex.pdb
+saveamberparm ligand ligand.prmtop ligand.crd
+saveamberparm protein protein.prmtop protein.crd
+saveamberparm complex complex.prmtop complex.crd
+source leaprc.water.opc
+solvatebox complex OPCBOX 10.0
+charge complex
+addions complex Cl- 0
+charge complex
+savepdb complex complex_sulu.pdb
+saveamberparm complex complex_su.prmtop complex_su.crd
+quit
+
+ new command : 
+ante-mmpbsa.py -p complex_su.prmtop -c complex.prmtop -r receptor.prmtop -l ligand.prmtop  -s ':WAT:Cl-' -n ':153' --radii mbondi2
+
+
+ MMPBSA.py -O -i mmpbsa.in -o FINAL_RESULTS_MMPBSA.dat -sp complex_su.prmtop -cp complex.prmtop -rp receptor.prmtop -lp ligand.prmtop -y *.nc
+
+ new command : 
+MMPBSA.py -O -i mmpbsa.in -o FINAL_RESULTS_MMPBSA.dat -sp complex_su.prmtop -cp complex_su.crd -rp receptor.prmtop -lp ligand.prmtop -y output.nc ouput1.nc ouput2.nc output3.nc output4.nc output5.nc output6.nc output7.nc output8.nc output9.nc output10.nc
+
+ new command : 
+Input file for running PB and GB
+&general
+   endframe=500, verbose=1,
+#   entropy=0,
+/
+&gb
+  igb=2, saltcon=0.100
+/
+
+ new command : 
+ante-mmpbsa.py -p complex_su.prmtop -c complex.prmtop -r receptor.prmtop -l ligand.prmtop  -s ':WAT:Cl-' -n ':152' --radii mbondi2
+
+ new command : 
+#! /usr/bin/env python
+
+import sys
+import glob
+
+def doit(n):
+    file_names = glob.glob('/.pdbqt')
+    everything = []
+    failures = []
+    print 'Found', len(file_names), 'pdbqt files'
+    for file_name in file_names:
+        file = open(file_name)
+        lines = file.readlines()
+        file.close()
+        try:
+            line = lines[1]
+            result = float(line.split(':')[1].split()[0])
+            everything.append([result, file_name])
+        except:
+            failures.append(file_name)
+    everything.sort(lambda x,y: cmp(x[0], y[0]))
+    part = everything[:n]
+    for p in part:
+        print p[1],
+    print
+    if len(failures) > 0:
+        print 'WARNING:', len(failures), 'pdbqt files could not be processed'
+
+if _name_ == '_main_':
+    doit(int(sys.argv[1]))
+
+ new command : 
+RMSF de hesapladım not olarak şurada dursun:
+cpptraj -p complex_su.prmtop
+trajin output.nc
+trajin output2.nc
+trajin output3.nc
+trajin output4.nc
+trajin output5.nc
+trajin output6.nc
+trajin output7.nc
+trajin output8.nc
+trajin output9.nc
+trajin output10.nc
+rms first out rmsd.dat
+atomicfluct out rmsf.dat :1-152 byres
+run
+
+ new command : 
+decompozisyon enerjisi de hesapladım o da not olarak şöyle dursun: 
+sample input file for running alanine scanning
+ &general
+   startframe=1, endframe=5000, interval=100,
+   verbose=1, 
+/
+&gb
+  saltcon=0.1
+/
+&decomp
+dec_verbose=1, idecomp=1,
+print_res="1-152"
+/
+
+ new command : 
+MMPBSA.py -O -i mmpbsa-rmsf.in -o FINAL_RESULTS_MMPBSA.dat -sp complex_su.prmtop -cp complex.prmtop -rp receptor.prmtop -lp ligand.prmtop -y output.nc output2.nc output3.nc output4.nc output5.nc output6.nc output7.nc output8.nc output9.nc output10.nc
+
+ new command : 
+kendime not:  MMPBSA.py -O -i mmpbsa.in -o FINAL_RESULTS_MMPBSA.dat -sp complex_su.prmtop -cp complex.prmtop -rp receptor.pr
+mtop -lp ligand.prmtop -y output.nc
+
+ new command : 
+kendime not: ante-mmpbsa.py -p complex_su.prmtop -c complex.prmtop -r receptor.prmtop -l ligand.prmtop  -s ':WAT:Na+' -n ':
+541' --radii mbondi2
+
+ new command : 
+kendime not: 
+source leaprc.protein.ff19sb
+source leaprc.gaff2
+receptor=loadpdb ../rec1.pdb
+ligand=loadmol2 ligand.mol2
+complex= combine { receptor ligand }
+set default PBRadii mbondi2 
+savepdb complex complex.pdb
+#saveamberparm ligand ligand.prmtop ligand.crd
+#saveamberparm protein protein.prmtop protein.crd
+#saveamberparm complex complex.prmtop complex.crd
+source leaprc.water.opc
+solvatebox complex OPCBOX 10.0
+charge complex
+addions complex Cl- 0
+addions complex Na+ 0
+charge complex
+savepdb complex complex_su.pdb
+saveamberparm complex complex_su.prmtop complex_su.crd
+quit
