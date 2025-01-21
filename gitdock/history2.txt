@@ -1,0 +1,1000 @@
+ 1033  head -n 7 0.gjf > head.txt
+ 1034  #son atomun 1 fazlası
+ 1035  sed -n '41,$p' 0.gjf >bonds.txt 
+ 1036  sed -i '1,1d' bonds.txt
+ 1037  cat head.txt z.txt bonds.txt > alt.com
+ 1038  for i in {0..350..10} ; do sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' $i.mol2 | awk '{print $3 "" $4 ""  $5}' > coord.txt # koordinatları al; sed -i '1,1d' coord.txt # ilk satırdaki boşluğu sil;  pr -mts ' ' elements.txt coord.txt ; paste -d ' ' elements.txt coord.txt > z.txt ; cat head.txt z.txt bonds.txt > alt$i.com; done
+ 1039  for k in *.gjf; do g09 <$k>${k%.*}.out; done
+ 1040  rm -rf *.txt
+ 1041  sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' 0.mol2 | awk '{print "               " $3 "   " $4 "   "  $5}' > coord.txt
+ 1042  sed -i '1,1d' coord.txt 
+ 1043  sed -n '8,40p' 0.gjf| awk '{print $1 "  "}' > elements.txt 
+ 1044  pr -mts ' ' elements.txt coord.txt 
+ 1045  paste -d ' ' elements.txt coord.txt > z.txt 
+ 1046  sed '$d' z.tx
+ 1047  head -n 7 0.gjf > head.txt
+ 1048  sed -n '41,$p' 0.gjf >bonds.txt 
+ 1049  sed -i '1,1d' bonds.txt
+ 1050  cat head.txt z.txt bonds.txt > alt.com
+ 1051  cat alt.com
+ 1052  for i in {0..350..10} ; do sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' $i.mol2 | awk '{print $3 "" $4 ""  $5}' > coord.txt # koordinatları al; sed -i '1,1d' coord.txt # ilk satırdaki boşluğu sil;  pr -mts ' ' elements.txt coord.txt ; paste -d ' ' elements.txt coord.txt > z.txt ; cat head.txt z.txt bonds.txt > alt$i.com; done
+ 1053  sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' a.mol2 | awk '{print $3 "" $4 ""  $5}'
+ 1054  sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' a.mol2 | awk '{print $3 "    " $4 "    "  $5}' > coord.txt # koordinatları al
+ 1055  sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' a.mol2 | awk '{print $3 "    " $4 "    "  $5}' 
+ 1056  for i in {0..350..10} ; do sed -n '/@<TRIPOS>ATOM/,/@<TRIPOS>BOND/p' $i.mol2 | awk '{print $3 "    " $4 "    "  $5}' > coord.txt # koordinatları al; sed -i '1,1d' coord.txt # ilk satırdaki boşluğu sil;  pr -mts ' ' elements.txt coord.txt ; paste -d ' ' elements.txt coord.txt > z.txt ; cat head.txt z.txt bonds.txt > alt$i.com; done
+ 1057  ls *.dat
+ 1058  tleap
+ 1059  for k in *.mol2; do  antechamber -i ${k%%.*}.mol2 -fi mol2 -o ${k%%.*}_gaff.mol2 -fo mol2 -at gaff -j 5 -dr no; done
+ 1060  tleap
+ 1061  lsESP*
+ 1062  ls ESP*
+ 1063  g09 <ESP.com> ESP.out
+ 1064  source /home/barbar/g09shell
+ 1065  cd /home/barbar
+ 1066  source g09shell
+ 1067  cd /mnt/d/makale7/params/oxaplatin/O6-Pt1-N19-C11_farkli
+ 1068  g09 <ESP.com> ESP.out
+ 1069  vi ESP.com
+ 1070  g09 <ESP.com> ESP.out
+ 1071  cat ESP.out
+ 1072  cat ESP.log
+ 1073  cd /mnt/d/makale7/params/oxaplatin/O6-Pt1-N19-C11_farkli/
+ 1074  python3 makepymol_son.py 
+ 1075  cd /mnt/d/makale7/dihedral
+ 1076  python GA.py sander.tab gaussian.tab
+ 1077  exit
+ 1078  source /mnt/d/amber/amber16/amber.sh
+ 1079  tleap
+ 1080  source /mnt/d/amber/amber16/amber.sh
+ 1081  cd /mnt/d/makale7
+ 1082  cd miminzasyon
+ 1083  tleap
+ 1084  sander -O -i min.in -o x.out -p x.prmtop -c x.inpcrd -r x.ncrst
+ 1085  sander -O -i min.in -o x.out -p a.prmtop -c a.crd -r x.ncrst
+ 1086  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1087  ambpdb -p a.top -x.ncrst > output.pdb
+ 1088  ambpdb -p a.top -c x.ncrst > output.pdb
+ 1089  cd RESP
+ 1090  antechamber -i ABAFOZ.log -fi gout -o ABAFOZ_resp.mol2 -fo mol2 -c resp -j 5 -at sybyl -dr no
+ 1091  cd ..
+ 1092  tleap
+ 1093  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1094  ambpdb -p a.top -c x.ncrst > output_esp.pdb
+ 1095  tleap
+ 1096  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1097  ambpdb -p a.top -c x.ncrst > output_2.pdb
+ 1098  parmchk -h
+ 1099  parmchk -i g_ABAFOZ.mol2 -f mol2 -o dihedrals.frcmod -a Y
+ 1100  tleap
+ 1101  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1102  ambpdb -p a.top -c x.ncrst > output_dihedral.pdb
+ 1103  tleap
+ 1104  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1105  ambpdb -p a.top -c x.ncrst > output_dihedral2.pdb
+ 1106  tleap
+ 1107  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1108  ambpdb -p a.top -c x.ncrst > output_dsp2.pdb
+ 1109  tleap
+ 1110  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1111  ambpdb -p a.top -c x.ncrst > output_angle.pdb
+ 1112  vi tleap.in
+ 1113  tleap -f tleap.in
+ 1114  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1115  ambpdb -p a.top -c x.ncrst > output_dihedral.pdb
+ 1116  tleap -f tleap.in
+ 1117  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1118  ambpdb -p a.top -c x.ncrst > output_dihedral.pdb
+ 1119  parmchk -i g_ABAFOZ.mol2 -f mol2 -o dihedrals.frcmod 
+ 1120  parmchk -i g2_ABAFOZ.mol2 -f mol2 -o dihedrals2.frcmod 
+ 1121  parmchk -i g2_ABAFOZ.mol2 -f mol2 -o dihedrals_ay.frcmod -a Y
+ 1122  cat tleap.in
+ 1123  tleap -f telap.in
+ 1124  cat telap.in
+ 1125  cat tleap.in
+ 1126  tleap -f tleap.in
+ 1127  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1128  ambpdb -p a.top -c x.ncrst > output_dihedral.pdb
+ 1129  tleap -f tleap.in
+ 1130  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1131  ambpdb -p a.top -c x.ncrst > hadibakem.pdb
+ 1132  ambpdb -p a.top -c x.ncrst > o.pdb
+ 1133  vi tleap.in
+ 1134  tleap -f tleap.in
+ 1135  vi tleap.in
+ 1136  cat tleap.in
+ 1137  tleap
+ 1138  parmchk -i g_ABAVEL.mol2 -f mol2 -o ABAVEL.frcmod 
+ 1139  parmchk -i g_ABEVEL.mol2 -f mol2 -o ABAVEL.frcmod 
+ 1140  parmchk -i g_ABEVEL.mol2 -f mol2 -o ABAVEL.frcmod -a Y
+ 1141  parmchk -i g_ABEVEL.mol2 -f mol2 -o ABEVEL_full.frcmod -a Y
+ 1142  parmchk -i g2_ABEVEL.mol2 -f mol2 -o ABEVEL_g2.frcmod -a Y
+ 1143  vi dup.txt
+ 1144  awk '{print $4,$3,$2,$1}' dup.txt
+ 1145  awk '{print $4"-"$3"-"$2"-"$1}' dup.txt
+ 1146  awk '{print $4"-"$3"-"$2"-"$1}' dup.txt >dup.txt
+ 1147  cd RESP
+ 1148  ls
+ 1149  cd ABEVEL/
+ 1150  ls
+ 1151  antechamber -i ABEVEL_esp.log -fi gout -o ABEVEL_resp.mol2 -fo mol2 -c resp -j 5 -at sybyl -dr no
+ 1152  cd ../..
+ 1153  tleap -f tleap.in
+ 1154  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1155  ambpdb -p a.top -c x.ncrst > o.pdb
+ 1156  tleap -f tleap.in
+ 1157  parmchk -i g_ABIFAV.mol2 -f mol2 -o ABIFAV_g_full.frcmod -a Y
+ 1158  tleap -f tleap.in
+ 1159  antechamber -i ABIFAV_esp.log -fi gout -o ABIVAF_resp.mol2 -fo mol2 -c resp -j 5 -at sybyl -dr no
+ 1160  cd ABIFAV/
+ 1161  antechamber -i ABIFAV_esp.log -fi gout -o ABIVAF_resp.mol2 -fo mol2 -c resp -j 5 -at sybyl -dr no
+ 1162  cd ..
+ 1163  tleap -f tleap.in
+ 1164  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1165  ambpdb -p a.top -c x.ncrst > o.pdb
+ 1166  cat tleap.in
+ 1167  tleap
+ 1168  sander -O -i min.in -o ABIFAV/x.out -p ABIFAV/a.top -c ABIFAV/a.crd -r ABIFAV/x.ncrst
+ 1169  ambpdb -p ABIFAV/a.top -c ABIFAV/x.ncrst > ABIFAV/out.pdb
+ 1170  cpptraj -p ABIFAV/out.pdb -y ABIFAV/out.pdb -x ABIFAV/output.mol2 
+ 1171  cd ABIFAV
+ 1172  cpptraj
+ 1173  antechamber
+ 1174  antechamber -i out.pdb -fi pdb -o output.mol2 -fo mol2 
+ 1175  antechamber -i out.pdb -fi pdb -o output.mol2 -fo mol2 -j 5
+ 1176  antechamber -i out.pdb -fi pdb -o output.mol2 -fo mol2 -j 5 -at sybyl -dr no
+ 1177  cd ..
+ 1178  cd ABAFUF
+ 1179  antechamber -i ABAFUF_esp.log -fi gout -o ABAFUF_resp.mol2 -fo mol2 -c resp -j 5 -at sybyl -dr no
+ 1180  antechamber -i ABAFUF_esp.log -fi gout -o g_ABAFUF.mol2 -fo mol2 -c resp -j 5 -at gaff2 -dr no
+ 1181  parmchk -i g_ABIFAV.mol2 -f mol2 -o ABIFAV_g_full.frcmod -a Y
+ 1182  ls
+ 1183  rm -rf ANTE*
+ 1184  ls
+ 1185  parmchk -i g_ABAFUF.mol2 -f mol2 -o g_ABAFUF_full.frcmod -a Y
+ 1186  parmchk -i g2_ABAFUF.mol2 -f mol2 -o g2_ABAFUF.frcmod 
+ 1187  tleap
+ 1188  parmchk -i g2_ABAFUF.mol2 -f mol2 -o ABAFUF_full_parm.frcmod
+ 1189  parmchk -i g2_ABAFUF.mol2 -f mol2 -o ABAFUF_full_parm.frcmod -a Y
+ 1190  parmchk -i g_ABAFUF.mol2 -f mol2 -o g_ABAFUF_full_parm.frcmod -a Y
+ 1191  parmchk -i ABAFUF_bonded.mol2 -f mol2 -o g_ABAFUF_full_parm.frcmod -a Y
+ 1192  tleap
+ 1193  cd ..,
+ 1194  cd ..
+ 1195  sander -O -i min.in -o ABIFAV/x.out -p ABIFAV/a.top -c ABIFAV/a.crd -r ABIFAV/x.ncrst
+ 1196  sander -O -i min.in -o ABAFUF/x.out -p ABAFUF/a.top -c ABAFUF/a.crd -r ABAFUF/x.ncrst
+ 1197  ambpdb -p ABAFUF/a.top -c ABAFUF/x.ncrst > ABAFUF/out.pdb
+ 1198  cd ABATIK
+ 1199  antechamber -i ABATIK_esp.log -fi gout -o g_ABATIK.mol2 -fo mol2 -c resp -j 5 -at gaff2 -dr no
+ 1200  tleap
+ 1201  parmchk -h
+ 1202  parmchk -i g_ABATIK.mol2 -f mol2 -o g_ABATIK_fullParm.frcmod -a Y
+ 1203  tleap
+ 1204  sander -O -i min.in -o ABAFUF/x.out -p ABAFUF/a.top -c ABAFUF/a.crd -r ABAFUF/x.ncrst
+ 1205  cd ..
+ 1206  sander -O -i min.in -o ABATIK/x.out -p ABATIK/a.top -c ABATIK/a.crd -r ABATIK/x.ncrst
+ 1207  ambpdb -p ABATIK/a.top -c ABATIK/x.ncrst > ABATIK/out.pdb
+ 1208  ambpdb -p ABATIK/a.top -c ABATIK/x.ncrst > ABATIK/out.pdb noconnect
+ 1209  ambpdb -p ABATIK/a.top -c ABATIK/x.ncrst > ABATIK/out.pdb noconect
+ 1210  ambpdb -p ABATIK/a.top -c ABATIK/x.ncrst > ABATIK/out.pdb -noconect
+ 1211  ambpdb -p ABATIK/a.top -c ABATIK/x.ncrst > ABATIK/out.pdb 
+ 1212  tleap
+ 1213  parmchk -i g_ABATIK.mol2 -f mol2 -o ABATIK_parm.frcmod -a Y
+ 1214  tleap
+ 1215  parmchk -i g_ABATIK.mol2 -f mol2 -o ABATIK_parm.frcmod -a Y
+ 1216  parmchk -i ABATIK/g_ABATIK.mol2 -f mol2 -o ABATIK/ABATIK_parm.frcmod -a Y
+ 1217  tleap
+ 1218  sander -O -i min.in -o ABATIK/x.out -p ABATIK/a.top -c ABATIK/a.crd -r ABATIK/x.ncrst
+ 1219  ambpdb -p ABATIK/a.top -c ABATIK/x.ncrst > ABATIK/out.pdb 
+ 1220  tleap
+ 1221  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1222  ambpdb -p a.top -c x.ncrst > out.pdb 
+ 1223  cd ABATIK/
+ 1224  parmchk -i g2_ABATIK.mol2 -f mol2 -o g2_ABATIK_parm.frcmod
+ 1225  parmchk -i g_ABATIK.mol2 -f mol2 -o g_ABATIK_parm.frcmod
+ 1226  parmchk -i g_ABATIK.mol2 -f mol2 -o g_ABATIK_parm.frcmod -a Y
+ 1227  vi awk.txt
+ 1228  awk '{print $3"-"$2"-"$1}' awk.txt
+ 1229  rm -rf awk.txt
+ 1230  vi aw
+ 1231  awk '{print $4"-"$3"-"$2"-"$1}' awk.txt
+ 1232  awk '{print $4"-"$3"-"$2"-"$1}' aw
+ 1233  tleap
+ 1234  sander -O -i ../min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1235  ambpdb -p a.top -c x.ncrst > out.pdb 
+ 1236  tleap
+ 1237  sander -O -i ../min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1238  ambpdb -p a.top -c x.ncrst > out.pdb 
+ 1239  parmchk -i g2_ABATIK.mol2 -f mol2 -o g2_ABATIK_parm.frcmod
+ 1240  cd ..
+ 1241  rm -rf dihedrals2.frcmod
+ 1242  vi dihedrals.frcmod
+ 1243  cd ABATIK
+ 1244  tleap
+ 1245  sander -O -i ../min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1246  ambpdb -p a.top -c x.ncrst > out.pdb 
+ 1247  tleap
+ 1248  sander -O -i ../min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1249  ambpdb -p a.top -c x.ncrst > out.pdb 
+ 1250  cat out.pdb
+ 1251  cd ..
+ 1252  awk '{ sub("\r$", ""); print }' dihedrals2.frcmod > dihedrals3.frcmod
+ 1253  cd ABATIK/
+ 1254  tleap
+ 1255  sander -O -i ../min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1256  cd /mnt/d/makale7/DFT/
+ 1257  ls
+ 1258  for k in $(find . -type f -name "*.frcmod"); do echo "$k"; grep -m1 "PD" "$k"; done
+ 1259  cat ./out/oxaplatin/DFT_oxaplatin_ca.frcmod.gaff.frcmod
+ 1260  for k in $(find . -type f -name "*.frcmod"); do echo "$k"; grep -m1 "Pd" "$k"; done
+ 1261  for k in $(find . -type f -name "*.out"); do echo "$k"; grep -m1 "Pd" "$k"; done
+ 1262  for k in $(find . -type f -name "*.out"); do echo "$k"; grep -m1 ".*noraman.*Pd" "$k"; done
+ 1263  cat ./out/copy_biten/DFT_LIVJIMf.out
+ 1264  head -n -7 ./out/copy_biten/DFT_LIVJIMf.out
+ 1265  for k in $(find . -type f -name "*.out"); do echo "$k"; grep -m1 ".*noraman.*Pd" "$k"; done
+ 1266  source /mnt/d/amber/amber16/amber.sh
+ 1267  cd /mnt/d/makale7/miminzasyon/
+ 1268  ls
+ 1269  cat leap.log
+ 1270  tleap
+ 1271  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1272  ambpdb -p a.top -c x.ncrst > out.pdb
+ 1273  tleap
+ 1274  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1275  ambpdb -p a.top -c x.ncrst > out.pdb
+ 1276  sander -O -i min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1277  ambpdb -p a.top -c x.ncrst > out.pdb
+ 1278  ls
+ 1279  cd ABATIK
+ 1280  antechamber -i ABATIK.mol2 -fi mol2 -o ABATIK_AMBER.pdb -fo pdb -j 5 -at AMBER -dr no
+ 1281  parmchk -h
+ 1282  antechamber -i ABATIK_AMBER.pdb -fi pdb -o tp.prepin -fo prepi -c bcc -j 4 -at gaff
+ 1283  antechamber -i ABATIK_AMBER.pdb -fi pdb -o tp.prepin -fo prepi -c bcc -j 4 -at gaff - 5 -dr no
+ 1284  antechamber -i ABATIK_AMBER.pdb -fi pdb -o tp.prepin -fo prepi -c bcc -j 4 -at gaff -j 5 -dr no
+ 1285  antechamber -i ABATIK_AMBER.pdb -fi pdb -o tp.prepin -fo prepi -at gaff -j 5 -dr no
+ 1286  parmchk -i g2_ABATIK.mol2 -f mol2 -o parm_test -a Y
+ 1287  cat parm_test 
+ 1288  parmchk -i g2_ABATIK.mol2 -f mol2 -o parm_test -a Y
+ 1289  cat parm_test 
+ 1290  parmchk -h
+ 1291  parmchk2 -i g2_ABATIK.mol2 -f mol2 -o parm_test -a Y
+ 1292  cat parm_test 
+ 1293  parmchk2 -i g2_ABATIK.mol2 -f mol2 -o parm_test -p gaff2.dat -a Y
+ 1294  parmchk2 -i g2_ABATIK.mol2 -f mol2 -o parm_test -p gaff.dat -a Y
+ 1295  parmchk2 -i g2_ABATIK.mol2 -f mol2 -o parm_test -p gaff2.dat -a Y
+ 1296  cat parm_test 
+ 1297  parmchk2 -i g2_ABATIK.mol2 -f mol2 -o parm_test -p gaff2.dat -a Y
+ 1298  cat parm_test 
+ 1299  exit
+ 1300  source /mnt/e/AmberTools21/amber20/amber20/amber.sh
+ 1301  source /mnt/e/AmberTools21/amber20/amber.sh
+ 1302  antechamber
+ 1303  sander.MPI
+ 1304  cd /home/barbar
+ 1305  ls
+ 1306  logout
+ 1307  sudo apt-get update
+ 1308  quit
+ 1309  exit
+ 1310  sudo apt-install cuda
+ 1311  sudo apt install cuda
+ 1312  sudo apt -f install cuda
+ 1313  exit
+ 1314  cd /mnt/d
+ 1315  uniq -u uniq.txt
+ 1316  cat uniq.txt | sort | uniq -u
+ 1317  cat uniq.txt | sort | uniq -u > resume.txt
+ 1318  mkdir camera
+ 1319  cd camera
+ 1320  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220428_194517.mp4
+ 1321  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220605_144802.jpg
+ 1322  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220617_113623.jpg
+ 1323  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220617_113629.jpg
+ 1324  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220617_113754.jpg
+ 1325  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220617_134906.jpg
+ 1326  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220619_171140.jpg
+ 1327  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220619_171143.jpg
+ 1328  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220626_181013.jpg
+ 1329  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220626_181016.jpg
+ 1330  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220626_181020.jpg
+ 1331  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220626_181024.jpg
+ 1332  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220626_182923.mp4
+ 1333  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220628_180159.jpg
+ 1334  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220628_180205.jpg
+ 1335  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220701_101323.jpg
+ 1336  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220701_101326.jpg
+ 1337  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220701_101331.jpg
+ 1338  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220701_101336.jpg
+ 1339  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220707_090009.jpg
+ 1340  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220710_121401.mp4
+ 1341  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220718_213125.jpg
+ 1342  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220719_104413.mp4
+ 1343  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220719_104432.mp4
+ 1344  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220719_130617.jpg
+ 1345  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220719_173806.jpg
+ 1346  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220719_173914.jpg
+ 1347  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220720_153845.jpg
+ 1348  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220721_151548.mp4
+ 1349  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220723_104920.jpg
+ 1350  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220723_104924.jpg
+ 1351  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220723_104926.jpg
+ 1352  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220723_104927.mp4
+ 1353  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141549.jpg
+ 1354  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141556.jpg
+ 1355  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141558.jpg
+ 1356  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141618.jpg
+ 1357  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141621.jpg
+ 1358  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141622.jpg
+ 1359  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141628.jpg
+ 1360  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141635.jpg
+ 1361  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141637.jpg
+ 1362  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141639.jpg
+ 1363  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_141652.jpg
+ 1364  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220725_142234.jpg
+ 1365  wget http://192.168.1.123:1234/storage/emulated/0/DCIM/Camera/20220726_183214.jpg
+ 1366  wget --recursive --no-parent http://192.168.1.123:1234/storage/emulated/0/DCIM/Screenshots/?
+ 1367  cd ..
+ 1368  mkdir thumb
+ 1369  cd thumb
+ 1370  wget --recursive --no-parent http://192.168.1.123:1234/storage/emulated/0/DCIM/.thumbnails/
+ 1371  wget --recursive --no-parent -A jpg http://192.168.1.123:1234/storage/emulated/0/DCIM/.thumbnails/
+ 1372  cd ..
+ 1373  mkdir whatsapp
+ 1374  wget --recursive --no-parent -A jpg http://192.168.1.123:1234/storage/emulated/0/WhatsApp/Media/WhatsApp%20Images/
+ 1375  cd whatsapp/
+ 1376  wget --recursive --no-parent -A jpg http://192.168.1.123:1234/storage/emulated/0/WhatsApp/Media/WhatsApp%20Images/
+ 1377  ls -l
+ 1378  wget --recursive --no-parent -A jpeg http://192.168.1.123:1234/storage/emulated/0/WhatsApp/Media/WhatsApp%20Images/
+ 1379  cd ..
+ 1380  mkdir
+ 1381  mkdir whatsappvideo
+ 1382  cd whatsappvideo/
+ 1383  wget --recursive --no-parent -A mp4 http://192.168.1.123:1234/storage/emulated/0/WhatsApp/Media/WhatsApp%20Video/
+ 1384  cd ..
+ 1385  mdir whatsapp_backup
+ 1386  mkdir whatsapp_backup
+ 1387  cd whatsapp_backup/
+ 1388  wget --recursive --no-parent http://192.168.1.123:1234/storage/emulated/0/WhatsApp/
+ 1389  nvcc --version
+ 1390  nvcc--version
+ 1391  nvidia -smi
+ 1392  lspci | grep -e VGA
+ 1393  ubuntu-drivers devices
+ 1394  mkdir amber22
+ 1395  cp -r amber22_lisansli/ amber22/amber22_lisansli
+ 1396  cd amber22
+ 1397  ls
+ 1398  tar xvfj AmberTools22.tar.bz2 
+ 1399  ls
+ 1400  tar xvfj Amber22.tar.bz2 
+ 1401  cd $AMBERHOME/AmberTools/src
+ 1402  cd /mnt/d/amber22
+ 1403  ls
+ 1404  cp -r amber22_src /home/amber22
+ 1405  cd /home
+ 1406  ls
+ 1407  rm -rf amber22
+ 1408  cd /mnt/d/amber22
+ 1409  ls
+ 1410  cd amber22_src/build/
+ 1411  ./run_cmake
+ 1412  make install
+ 1413  make install -j12
+ 1414  source /mnt/d/amber22/amber.sh
+ 1415  source /mnt/d/amber22/amber22/amber.sh
+ 1416  sanderr.MPI
+ 1417  sander.MPI
+ 1418  nvidia-smi
+ 1419  nvcc --version
+ 1420  cd /usr/local
+ 1421  ls
+ 1422  which cuda
+ 1423  where cuda
+ 1424  cd cuda
+ 1425  ls
+ 1426  cd ..
+ 1427  ls
+ 1428  cd ..
+ 1429  ls
+ 1430  cd tmp
+ 1431  ls
+ 1432  cd ..
+ 1433  locate cuda | grep /cuda$
+ 1434  locate cuda 
+ 1435  cd /home
+ 1436  vi .bashrc
+ 1437  source /usr/lib/x86_64-linux-gnu/libicudata.so.60.2
+ 1438  source /usr/lib/x86_64-linux-gnu
+ 1439  source /usr/lib/x86_64-linux-gnu/
+ 1440  cd /usr/lib/x86_64-linux-gnu/
+ 1441  ls
+ 1442  find / -type d -name cuda 2>/dev/null
+ 1443  locate nvcc
+ 1444  locate cuda
+ 1445  source /usr/lib/x86_64-linux-gnu/
+ 1446  source usr/lib/x86_64-linux-gnu/
+ 1447  source /usr/lib/x86_64-linux-gnu
+ 1448  source /usr/lib/
+ 1449  source /usr
+ 1450  source usr
+ 1451  sudo apt-get --purge remove "*cublas*" "cuda*" "nsight*"
+ 1452  nvidia-smi
+ 1453  locate cuda
+ 1454  exit
+ 1455  sudo apt-get update
+ 1456  nvidia-smi
+ 1457  nvcc --version
+ 1458  nvcc--version
+ 1459  sudo apt install nvidia-cuda-toolkit
+ 1460  nvcc--version
+ 1461  nvcc --version
+ 1462  nvidia -smi
+ 1463  nvidia-smi
+ 1464  locate cuda
+ 1465  rm -rf /usr/lib/x86_64-linux-gnu/libicudata.so.60
+ 1466  rm -rf /usr/lib/x86_64-linux-gnu/libicudata.so.60.2
+ 1467  rm -rf /usr/share/vim/vim80/indent/cuda.vim
+ 1468  rm -rf /usr/share/vim/vim80/syntax/cuda.vim
+ 1469  nvidia-smi
+ 1470  sudo apt-get update
+ 1471  nvidia-smi
+ 1472  locate nvidia-smi.exe
+ 1473  locate nvidia-smi
+ 1474  locate cuda
+ 1475  cd /mnt/d/amber22/amber22_src/build
+ 1476  wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin
+ 1477  sudo mv cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600
+ 1478  sudo dpkg -i /mnt/d/cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb.1
+ 1479  cd /mnt/d
+ 1480  sudo dpkg -i /mnt/d/cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb.1
+ 1481  sudo apt-get update
+ 1482  sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb
+ 1483  sudo cp /var/cuda-repo-wsl-ubuntu-11-7-local/cuda-B81839D3-keyring.gpg /usr/share/keyrings/
+ 1484  sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb
+ 1485  wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin
+ 1486  sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb
+ 1487  sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.0-1_amd64.deb
+ 1488  sudo apt install ./liburcu6*.deb
+ 1489  sudo cp /var/cuda-repo-wsl-ubuntu-11-7-local/*.gpg /usr/share/keyrings/
+ 1490  sudo apt-get update
+ 1491  sudo apt-get -y install cuda
+ 1492  locate cuda
+ 1493  nvcc --version
+ 1494  cd /usr/share
+ 1495  ls
+ 1496  which cuda
+ 1497  sudo apt-get update
+ 1498  locate cuda
+ 1499  locate nvcc
+ 1500  which nvcc
+ 1501  cd /usr/bin
+ 1502  ls
+ 1503  ls cud*
+ 1504  which nvidia-smi
+ 1505  cd /usr/lib/wsl
+ 1506  ls
+ 1507  cd drivers
+ 1508  ls
+ 1509  cd cud*
+ 1510  cd ..
+ 1511  ls
+ 1512  cd lib
+ 1513  ls
+ 1514  /usr/lib/wsl
+ 1515  find / -type d -name cuda 2>/dev/null
+ 1516  cd /usr/local
+ 1517  ls
+ 1518  source /usr/local/cuda-11.7
+ 1519  export /usr/local/cuda-11.7
+ 1520  dpkg -L cuda
+ 1521  cd cuda-11.7
+ 1522  ls
+ 1523  cd lib64
+ 1524  ls
+ 1525  cd /home
+ 1526  vi .bashrc
+ 1527  source .bashrc
+ 1528  nvcc --version
+ 1529  export CUDA_HOME=/usr/local/cuda-11.7
+ 1530  nvcc --version
+ 1531  which nvcc
+ 1532  cd /usr/bin
+ 1533  ls
+ 1534  ls nv*
+ 1535  cd nvcc
+ 1536  nvcc
+ 1537  echo ${CUDA_HOME}/bin/
+ 1538  gcc --version
+ 1539  which gcc
+ 1540  cd /usr/bin
+ 1541  ls gcc*
+ 1542  sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+ 1543  sudo apt install gcc-10
+ 1544  sudo apt-get update
+ 1545  gcc --version
+ 1546  ls gcc*
+ 1547  cp gcc gcc-74
+ 1548  cp gcc-10 gcc
+ 1549  gcc --version
+ 1550  cd /mnt/d/amber22/amber22_src/build
+ 1551  cat run_cmake
+ 1552  ./run_cmake
+ 1553  loacate libicudata
+ 1554  locate libicudata
+ 1555  cp /usr/lib/x86_64-linux-gnu/libicudata.so.60 /usr/local/cuda-11.7/lib64/libicudata.so.60
+ 1556  exit
+ 1557  nvcc --help
+ 1558  nvcc --version
+ 1559  nvidia -smi
+ 1560  nvidia-smi
+ 1561  source /home/.bashrc
+ 1562  nvcc --version
+ 1563  cat /home/.bashrc
+ 1564  export CUDA_HOME=/usr/local/cuda-11.7
+ 1565  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.7/lib64:/usr/local/cuda-11.7/extras/CUPTI/lib64
+ 1566  nvcc --version
+ 1567  which nvcc
+ 1568  cd /usr/local/cuda-11.7
+ 1569  ls
+ 1570  cd bin
+ 1571  nvcc
+ 1572  ls nv**
+ 1573  mv /usr/bin/nvcc /usr/bin/nvcc-9
+ 1574  nvcc --version
+ 1575  cp nvcc /usr/bin/nvcc
+ 1576  nvcc --version
+ 1577  cd /mnt/d/amber22/amber22_src/build
+ 1578  make install -j 12
+ 1579  ./run_cmake
+ 1580  nvcc --version
+ 1581  sudo apt-get update
+ 1582  ./run_cmake
+ 1583  make install
+ 1584  pmemd
+ 1585  source /mnt/d/amber22/amber22/amber.sh
+ 1586  pmemd
+ 1587  gcc --version
+ 1588  g++ --version
+ 1589  gfortran --version
+ 1590  sudo apt-get update
+ 1591  gcc --version
+ 1592  g++ --version
+ 1593  gfortran --version
+ 1594  apt-get install g++-10.3 gfortran-10.3
+ 1595  sudo apt-get install g++-10.3 gfortran-10.3
+ 1596  sudo apt-get install g++-10 gfortran-10
+ 1597  make install
+ 1598  pmemd.cuda
+ 1599  cd /mnt/d/1264/
+ 1600  cd pmemd_test/
+ 1601  pmemd.cuda -O -i ../heat1.in -o heat1.out -p a.top -c x.ncrst -r heat1.ncrst -x heat1.nc
+ 1602  pmemd -O -i ../heat1.in -o heat1.out -p a.top -c x.ncrst -r heat1.ncrst -x heat1.nc
+ 1603  pmemd.cuda -O -i ../eq.in     -p a.top -c heat7.ncrst -r equil_01.ncrst -o equil1.out -x  equil_01.nc
+ 1604  export CUDA_VISIBLE_DEVICES=0
+ 1605  nvidia-smi
+ 1606  pmemd.cuda -O -i ../eq.in     -p a.top -c heat7.ncrst -r equil_01.ncrst -o equil1.out -x  equil_01.nc
+ 1607  cd /mnt/d/lycorine2/
+ 1608  ls
+ 1609  ls *.sh
+ 1610  cd lycorine/
+ 1611  ls *.sh
+ 1612  cat x.sh
+ 1613  ls *.in
+ 1614  ls *.prmtop
+ 1615  ls *.ncrst
+ 1616  sander -O -i ../min.in -o x.out -p a.top -c a.crd -r x.ncrst
+ 1617  sander -O -i /in_dosyalari/min1_solvent.in -o x.out -p a.prmtop -c a.inpcrd -r x.ncrst
+ 1618  sander -O -i in_dosyalari/min1_solvent.in -o x.out -p a.prmtop -c a.inpcrd -r x.ncrst
+ 1619  sander -O -i in_dosyalari/min1_solvent.in -o x.out -p a.prmtop -c a.inpcrd 
+ 1620  mpirun -np 6 sander.MPI -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd 
+ 1621  mpirun --allow-run-as-root -np 6 sander.MPI -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd 
+ 1622  mpirun --allow-run-as-root -np 6 sander.MPI -O -i in_dosyalari/min1_solvent.in -o min1_GPU.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd 
+ 1623  pmemd.cuda -O -i in_dosyalari/min1_solvent.in -o min1_GPU.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd
+ 1624  pmemd.cuda -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd
+ 1625  mpirun --allow-run-as-root -np 6 sander.MPI -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd
+ 1626  pmemd.cuda -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd
+ 1627  export CUDA_VISIBLE_DEVICES=1
+ 1628  pmemd.cuda -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd
+ 1629  export CUDA_VISIBLE_DEVICES=0
+ 1630  pmemd.cuda.mpi -O -i in_dosyalari/min1_solvent.in -o min1.out -p a.prmtop -c a.inpcrd -r min1.ncrst -ref a.inpcrd
+ 1631  make test.cuda.parallel
+ 1632  cd /mnt/d
+ 1633  history >pmemd.cuda_history.txt
+ 1634  logout
+ 1635  nvidia-smi
+ 1636  cd Downloads/
+ 1637  ls
+ 1638  chmod a+x upscayl-2.0.1-linux.AppImage
+ 1639  ./upscayl-2.0.1-linux.AppImage
+ 1640  exit
+ 1641  jupyter notebook
+ 1642  exit
+ 1643  nvidia-smi
+ 1644  cd Downloads/
+ 1645  git clone https://github.com/nsarrazin/serge.git && cd serge
+ 1646  cp .env.sample .env
+ 1647  docker
+ 1648  cd /mnt/d/makale7
+ 1649  grep -r --include="*.gjf" "Pop=MK iop(6/33=2) iop(6/42=6) "
+ 1650  exit
+ 1651  cd Downloads/
+ 1652  cd murat_docking/
+ 1653  ls *.sh
+ 1654  ./convert_all.sh
+ 1655  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ 1656  exit
+ 1657  cd Downloads/
+ 1658  cd mgltools_x86_64Linux2_1.5.7
+ 1659  ./install.sh
+ 1660  echo "export MGL_ROOT=~/MGLTools-1.5.7" >> ~/.bashrc
+ 1661  echo "export PATH=$MGL_ROOT/bin:$PATH" >> ~/.bashrc
+ 1662  cd ../murat_docking/
+ 1663  prepare_ligand4.py -l ligand.mol2 -o ligand.pdbqt
+ 1664  ls ~/MGLTools-1.5.7
+ 1665  find ~ -name "MGLTools*"
+ 1666  cd ..
+ 1667  cd M
+ 1668  cd mgltools_x86_64Linux2_1.5.7/
+ 1669  install.sh
+ 1670  ./install.sh -h
+ 1671  mkdir -p /mnt/d/mglinux
+ 1672  ./install.sh -d /mnt/d/mglinux
+ 1673  su barbatr
+ 1674  ./install.sh -d /mnt/d/mglinux/
+ 1675  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ 1676  ./install.sh -d /mnt/d/mglinux/
+ 1677  prepare_ligand4.py 
+ 1678  /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py
+ 1679  python /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py
+ 1680  export PATH="/mnt/d/mglinux/bin:$PATH"
+ 1681  prepare_ligand4.py 
+ 1682  cd /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24
+ 1683  prepare_ligand4.py 
+ 1684  export PATH="/mnt/d/mglinux/bin:$PATH"
+ 1685  pythonsh /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py -l your_ligand_file.mol2 -o output.pdbqt
+ 1686  cd /mnt/c/Users/meow2/Downloads/murat_docking/
+ 1687  pythonsh /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py -l ligand.mol2 -o output.pdbqt
+ 1688  pythonsh /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py -l *.mol2 -o *.pdbqt
+ 1689  vi convert_all.sh
+ 1690  chmod +x convert_all.sh 
+ 1691  ./convert_all.sh 
+ 1692  ./vina --receptor protein.pdbqt --ligand ligand.pdbqt --center_x 10 --center_y 10 --center_z 10 --size_x 20 --size_y 20 --size_z 20 --out result.pdbqt --log result.txt
+ 1693  chmod +x vina.exe
+ 1694  ./vina.exe -h
+ 1695  ./vina.exe --receptor receptors/docking_A.pdbqt --ligand a.pdbqt --center_x 88.472 --center_y 85.056  --center_z -3.472 --size_x 126 --size_y 126 --size_z 125 --out result.pdbqt --log result.txt
+ 1696  vi run_docking.sh
+ 1697  chmod +x run_docking.sh 
+ 1698  ./run_docking.sh 
+ 1699  exit
+ 1700  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ 1701  cd Downloads/
+ 1702  cd mgltools_x86_64Linux2_1.5.7/
+ 1703  ./install.sh -d /mnt/d/mglinux
+ 1704  cd ../murat_docking/
+ 1705  ls*.sh
+ 1706  ls *.sh
+ 1707  ./convert_all.sh
+ 1708  pytonsh
+ 1709  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ 1710  ./convert_all.sh
+ 1711  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ 1712  alias pmv='/mnt/d/mglinux/bin/pmv'
+ 1713  alias adt='/mnt/d/mglinux/bin/adt'
+ 1714  alias vision='/mnt/d/mglinux/bin/vision'
+ 1715  alias pythonsh='/mnt/d/mglinux/bin/pythonsh'
+ 1716  ./convert_all.sh
+ 1717  ls *.mol2
+ 1718  /mnt/d/mglinux/bin/pythonsh /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py -l 4-Hydroxybenzaldehyde_out_1.mol2 -o "4-Hydroxybenzaldehyde_out_1.pdbqt
+ 1719  /mnt/d/mglinux/bin/pythonsh /mnt/d/mglinux/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py -l 4-Hydroxybenzaldehyde_out_1.mol2 -o 4-Hydroxybenzaldehyde_out_1.pdbqt
+ 1720  cd ..
+ 1721  exit
+ 1722  cd /home
+ 1723  rm -rf .bashrc
+ 1724  exit
+ 1725  cd /home
+ 1726  vi .bashrc
+ 1727  cp /etc/skel/.bashrc ~/
+ 1728  exit
+ 1729  cd Downloads
+ 1730  ls mgl*
+ 1731  tar -zxvf mgltools_x86_64Linux2_1.5.7p1.tar.gz
+ 1732  ./install.sh
+ 1733  cd mgltools_x86_64Linux2_1.5.7/
+ 1734  ./install.sh
+ 1735  exit
+ 1736  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ 1737  ./install.sh -d /mnt/d/mglinux
+ 1738  cd Downloads/
+ 1739  cd mgltools_x86_64Linux2_1.5.7/
+ 1740  ./install.sh -d /mnt/d/mglinux
+ 1741  cd ../murat_docking/
+ 1742  ls *.sh
+ 1743  ./convert_all.sh
+ 1744  cd Downloads/
+ 1745  cd  murat_docking/
+ 1746  ls *.sh
+ 1747  ./convert_all.
+ 1748  chmod +x convert_all.sh
+ 1749  ./convert_all.sh
+ 1750  exit
+ 1751  obabel
+ 1752  cd Downloads/
+ 1753  cd murat_docking/
+ 1754  obabel
+ 1755  obabel -i mol2 a.mol2 -O a.pdbqt
+ 1756  exit
+ 1757  cd results/
+ 1758  cd ..
+ 1759  ./run_docking.sh 
+ 1760  cd A_results
+ 1761  awk '/-----+\+------------+\+----------+\+----------/ {print FILENAME; getline; print}' dosya_adi
+ 1762  awk '/-----+\+------------+\+----------+\+----------/ {print FILENAME; getline; print}' *.txt
+ 1763  cd ../A_results_ilk
+ 1764  awk '/-----+\+------------+\+----------+\+----------/ {print FILENAME; getline; print}' *.txt
+ 1765  cd ../A_results
+ 1766  awk '/-----+\+------------+\+----------+\+----------/ {print FILENAME; getline; print}' *.txt > TOPLUsonuc_1.txt
+ 1767  cd ..
+ 1768  mkdir B_results
+ 1769  ./run_docking.sh 
+ 1770  cd B_results/
+ 1771  awk '/-----+\+------------+\+----------+\+----------/ {print FILENAME; getline; print}' *.txt > TOPLUsonuc_1.txt
+ 1772  cd ..
+ 1773  cd A_results_ilk
+ 1774  awk '/-----+\+------------+\+----------+\+----------/ {print FILENAME; getline; print}' *.txt > TOPLUsonuc_1.txt
+ 1775  exit
+ 1776  cd Downloads/
+ 1777  python nano.py
+ 1778  vi nano2.py
+ 1779  python nano2.py
+ 1780  vi nano2.py
+ 1781  python nano2.py
+ 1782  python nano.py
+ 1783  python3 nano.py
+ 1784  python3 nano2.py
+ 1785  pip install numpy
+ 1786  pip3 install numpy
+ 1787  sudo apt-get update
+ 1788  sudo apt-get pip3
+ 1789  apt install python3-pip
+ 1790  pip3 install numpy
+ 1791  python3 nano2.py
+ 1792  pip3 install scipy
+ 1793  python3 nano2.py
+ 1794  python3 nano.py
+ 1795  python3 nano2.py
+ 1796  python3 nano.py
+ 1797  python3 nano2.py
+ 1798  python3 nano.py
+ 1799  python3 nano2.py
+ 1800  python3 nano.py
+ 1801  python3 nano2.py
+ 1802  python3 kure_yaricap.py 
+ 1803  grep '^DOCKED' a.dlg | cut -c9- >a.pdbqt  
+ 1804  cd pd
+ 1805  grep '^DOCKED' a.dlg | cut -c9- >a.pdbqt  
+ 1806  cd ..
+ 1807  ./vina_split.exe --input pd/a.pdbqt
+ 1808  cd pd
+ 1809  grep "Estimated Free Energy of Binding" *.pdbqt
+ 1810  cd ../../../
+ 1811  cd ../Downloads/
+ 1812  exit
+ 1813  chmod a+x ADFRsuite_Linux-x86_64_1.0_install
+ 1814  ls AD*
+ 1815  cd ../../../Downloads/
+ 1816  chmod a+x ADFRsuite_Linux-x86_64_1.0_install
+ 1817  ./ADFRsuite_Linux-x86_64_1.0_install
+ 1818  pip install -U numpy openbabel meeko
+ 1819  pip install meeko
+ 1820  conda install meeko
+ 1821  export PATH="/home/barabr/anaconda3/bin":$PATH
+ 1822  conda
+ 1823  pwd
+ 1824  cd /home/barbar
+ 1825  ls
+ 1826  export PATH="/home/barbar/anaconda3/bin":$PATH
+ 1827  comda
+ 1828  conda
+ 1829  conda install meeko
+ 1830  cd ..
+ 1831  cat .bashrc
+ 1832  vi .bashrc
+ 1833  ls
+ 1834  cd barabr
+ 1835  cd barbar
+ 1836  ls
+ 1837  vi fakebashrc
+ 1838  source fakebashrc
+ 1839  mk_prepare_ligand.py
+ 1840  cd /mnt/c/Users/meow2/Downloads/
+ 1841  chmod a+x ADFRsuite_Linux-x86_64_1.0_install
+ 1842  ./ADFRsuite_Linux-x86_64_1.0_install
+ 1843  source /usr/local/ADFRsuite-1.0/
+ 1844  export /usr/local/ADFRsuite-1.0/
+ 1845  conda activate vina
+ 1846  conda init bash
+ 1847  vi /root/.bashrc
+ 1848  conda activate vina
+ 1849  conda init bash
+ 1850  vi /root/.bashrc
+ 1851  source ~/.bashrc
+ 1852  conda init bash
+ 1853  cd /home/barbar
+ 1854  cd anaconda3/
+ 1855  cd etc
+ 1856  ls
+ 1857  cd profile.d/
+ 1858  ls co*
+ 1859  vi /root/.bashrc
+ 1860  source ~/.bashrc
+ 1861  conda init bash
+ 1862  logout
+ 1863  conda activate vina
+ 1864  conda create --name vina
+ 1865  conda update -n base -c defaults conda
+ 1866  cd Desktop/master/
+ 1867  cd polimer
+ 1868  sed 's/\bCo\b/Fe/g' a.mol2 > a_Fe.mol2
+ 1869  sed 's/\bCo\b/Pd/g' a.mol2 > a_Pd.mol2
+ 1870  sed 's/\bCo\b/Ni/g' a.mol2 > a_Ni.mol2
+ 1871  sed 's/\bCo\b/Cu/g' a.mol2 > a_Cu.mol2
+ 1872  sed 's/Co/Fe/g' a.mol2 > a_Fe.mol2
+ 1873  sed 's/Co/Pd/g' a.mol2 > a_Pd.mol2
+ 1874  sed 's/Co/Cu/g' a.mol2 > a_Cu.mol2
+ 1875  sed 's/Co/Ni/g' a.mol2 > a_Ni.mol2
+ 1876  sed 's/Co/Ni/g' a2.mol2 > a2_Ni.mol2
+ 1877  sed 's/Co/Cu/g' a2.mol2 > a2_Cu.mol2
+ 1878  sed 's/Co/Pd/g' a2.mol2 > a2_Pd.mol2
+ 1879  sed 's/Co/Fe/g' a2.mol2 > a2_Fe.mol2
+ 1880  sed 's/Co/Fe/g' a3.mol2 > a3_Fe.mol2
+ 1881  sed 's/Co/Pd/g' a3.mol2 > a3_Pd.mol2
+ 1882  sed 's/Co/Cu/g' a3.mol2 > a3_Cu.mol2
+ 1883  sed 's/Co/Ni/g' a3.mol2 > a3_Ni.mol2
+ 1884  python3 mol2_to_gjf.py 
+ 1885  pwd
+ 1886  cd /home/barbar
+ 1887  ls
+ 1888  source g09shell
+ 1889  cd /mnt/c/Users/meow2/Desktop/master/polimer
+ 1890  chmod a+x run_09.sh 
+ 1891  ./run_09.sh 
+ 1892  win2dos run_09.sh 
+ 1893  dos2unix run_09.sh 
+ 1894  ./run_09.sh 
+ 1895  find . -type f -name '*Cu*' -exec mv {} Cu_X/ \;
+ 1896  find . -type f -name '*Cu*' -exec mv {} Cu/ \;
+ 1897  find . -type f -name '*Cu*' -exec mv {} cu/ \;
+ 1898  find . -type f \( -iname '*Cu*' -o -iname '*CU*' \) -exec mv {} cu/ \;
+ 1899  find . -type f \( -iname '*Fe*' -o -iname '*FE*' \) -exec mv {} fe_test/ \;
+ 1900  find . -type f \( -iname '*Ni*' -o -iname '*NI*' \) -exec mv {} ni/ \;
+ 1901  find . -type f \( -iname '*Pd*' -o -iname '*PD*' \) -exec mv {} pd/ \;
+ 1902  find . -type f \( -name "*.gjf" -o -name "*.log" -o -name "*.LOG" -o -name "*.out" \) -exec rm -f {} +
+ 1903  mkdir dockmol2
+ 1904  find . -type f -name "*.mol2" -exec cp {} dockmol2/ \;
+ 1905  cd dockmol2
+ 1906  for file in *.mol2; do   sed -i -e 's/\bPd\b/Fe/g' -e 's/\bNi\b/Fe/g' -e 's/\bCu\b/Fe/g' -e 's/\bCo\b/Fe/g' "$file"; done
+ 1907  chmod a+x convert_all.sh 
+ 1908  ./convert_all.sh 
+ 1909  dos2unix convert_all.sh 
+ 1910  ./convert_all.sh 
+ 1911  ./autogrid4.exe -p a.gpf -l a.glg
+ 1912  dos2unix dpf_uret.sh 
+ 1913  chmod a+x dpf_uret.sh 
+ 1914  ./dpf_uret.sh 
+ 1915  dos2unix run_autodock_for_all_dpf.sh 
+ 1916  chmod a+x run_autodock_for_all_dpf.sh 
+ 1917  ./run_autodock_for_all_dpf.sh 
+ 1918  cd Desktop/
+ 1919  cd master
+ 1920  python3 dergi_listesi.py 
+ 1921  ,ls
+ 1922  ls
+ 1923  ls *.csv
+ 1924  cat dergi_listesi.
+ 1925  cat dergi_listesi.csv
+ 1926  python3 dergi_listesi.py 
+ 1927  cd Desktop/master/
+ 1928  ls
+ 1929  pwd
+ 1930  cd /home/barbar
+ 1931  source g09shell
+ 1932  cd /mnt/c/Users/meow2/Desktop/master/opt
+ 1933  g09 <cu-dft.gjf> cu-dft.log
+ 1934  g09 <cu-dft_buda.gjf> cu-dft_buda.log
+ 1935  cd Desktop/master/opt
+ 1936  pwd
+ 1937  cd /home/barbar
+ 1938  source g09shell
+ 1939  cd /mnt/c/Users/meow2/Desktop/master/opt
+ 1940  g09 <cu_notral.gjf> cu_notral.log
+ 1941  cd Desktop/master/opt
+ 1942  tail -f PD.LOG
+ 1943  cd /home/barbar/g09
+ 1944  ls *
+ 1945  ls -l
+ 1946  cd /scratch
+ 1947  ls sc*
+ 1948  cd ..
+ 1949  g16<pd_v3.gjf g16 <
+ 1950  g16 <pd_v3.mo2> pd_v3.log
+ 1951  cd /mnt/c/master/op
+ 1952  cd /mnt/Desktop/master/op
+ 1953  cd /mnt/Desktop/master/opt
+ 1954  cd /mnt/Desktop/master
+ 1955  cd /mnt/c/Desktop/master
+ 1956  cd /mnt/c/Users/meow2/Desktop/master/opt
+ 1957  g16 <pd_v3.gjf> pd_v3.log
+ 1958  python3 diheral.py
+ 1959  ls
+ 1960  python3 dihedral.py
+ 1961  cd /mnt/d
+ 1962  ls *.mol2
+ 1963  python3 convert_mol2_to_matris.py 
+ 1964  pip3 install rdkit
+ 1965  pip install rdkit
+ 1966  conda
+ 1967  conda create -n rdkit_env python=3.7
+ 1968  conda activate rdkit_env
+ 1969  conda install -c conda-forge rdkit
+ 1970  python3 convert_mol2_to_matris.py 
+ 1971  cd Downloads/
+ 1972  cd firat_dock/
+ 1973  chmod a+x convert_all.sh 
+ 1974  ./convert_all.sh 
+ 1975  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1976  ./convert_all2.sh
+ 1977  tr -d '\15\32' <  convert_all2.sh > convert_all2.sh
+ 1978  ./convert_all2.sh
+ 1979  chmod a+x convert_all2.sh
+ 1980  ./convert_all2.sh
+ 1981  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1982  ./convert_all2.sh
+ 1983  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1984  ./convert_all2.sh
+ 1985  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1986  ./convert_all2.sh
+ 1987  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1988  ./convert_all2.sh
+ 1989  /mnt/d/mglx/mgltools_x86_64Linux2_1.5.7/bin/pythonsh 
+ 1990  ./convert_all.sh
+ 1991  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1992  ./convert2_all.sh
+ 1993  ./convert_all2.sh
+ 1994  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1995  ./convert_all2.sh
+ 1996  tr -d '\15\32' <  convert_all.sh > convert_all2.sh
+ 1997  ./convert_all2.sh
+ 1998  exit
+ 1999  cd Downloads/
+ 2000  vi compare.sh
+ 2001  chmod a+x compare.sh 
+ 2002  ./compare.sh 
+ 2003  cd firat_dock/
+ 2004  ./convert_all2.sh 
+ 2005  python3 receptor_kutu_boyutu_belirle.py 
+ 2006  ./vina.exe --receptor "/mnt/c/Users/meow2/Downloads/firat_dock/pdbqt/1.pdbqt" --ligand "/mnt/c/Users/meow2/Downloads/firat_dock/ligand/ligand.pdbqt" --center_x 84.059 --center_y 78.881 --center_z 80.8175 --size_x 65.906 --size_y 82.55000000000001 --size_z 91.20700000000001 --out "A_results/1.pdbqt_out.pdbqt" --log "A_results/1.pdbqt_log.txt" --exhaustiveness 24
+ 2007  ./vina.exe --receptor "/mnt/c/Users/meow2/Downloads/firat_dock/pdbqt/PGSC0003DMT400002061_1.pdbqt" --ligand "/mnt/c/Users/meow2/Downloads/firat_dock/ligand/ligand.pdbqt" --center_x 97.38 --center_y 92.6865 --center_z 110.6035 --size_x 67.004 --size_y 80.19299999999998 --size_z 127.831 --out "A_results/PGSC0003DMT400002061_1.pdbqt_out.pdbqt" --log "A_results/PGSC0003DMT400002061_1.pdbqt_log.txt" --exhaustiveness 24
+ 2008  cd pdqqt
+ 2009  cd pdbqt
+ 2010  cat "\mnt\c\Users\meow2\Downloads\firat_dock\pdbqt\PGSC0003DMT400002061_1.pdbqt"
+ 2011  pwd
+ 2012  .\vina.exe --receptor "\mnt\c\Users\meow2\Downloads\firat_dock\pdbqt\PGSC0003DMT400002062_1.pdbqt" --ligand "\mnt\c\Users\meow2\Downloads\firat_dock\ligand\ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results\PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results\PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24 
+ 2013  cd ..
+ 2014  .\vina.exe --receptor "\mnt\c\Users\meow2\Downloads\firat_dock\pdbqt\PGSC0003DMT400002062_1.pdbqt" --ligand "\mnt\c\Users\meow2\Downloads\firat_dock\ligand\ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results\PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results\PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24 
+ 2015  chmod a+x vina.exe
+ 2016  .\vina.exe --receptor "\mnt\c\Users\meow2\Downloads\firat_dock\pdbqt\PGSC0003DMT400002062_1.pdbqt" --ligand "\mnt\c\Users\meow2\Downloads\firat_dock\ligand\ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results\PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results\PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24 
+ 2017  ls *.exe
+ 2018  .\vina.exe --receptor "\mnt\c\Users\meow2\Downloads\firat_dock\pdbqt\PGSC0003DMT400002062_1.pdbqt" --ligand "\mnt\c\Users\meow2\Downloads\firat_dock\ligand\ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results\PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results\PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24 
+ 2019  ./vina.exe --receptor "\mnt\c\Users\meow2\Downloads\firat_dock\pdbqt\PGSC0003DMT400002062_1.pdbqt" --ligand "\mnt\c\Users\meow2\Downloads\firat_dock\ligand\ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results\PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results\PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24 
+ 2020  ./vina.exe --receptor "/mnt/c/Users/meow2/Downloads/firat_dock/pdbqt/PGSC0003DMT400002062_1.pdbqt" --ligand "/mnt/c/Users/meow2/Downloads/firat_dock/ligand/ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results/PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results/PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24
+ 2021  ./vina.exe --receptor "C:\\Users\\meow2\\Downloads\\firat_dock\\pdbqt\\PGSC0003DMT400002062_1.pdbqt" --ligand "C:\\Users\\meow2\\Downloads\\firat_dock\\ligand\\ligand.pdbqt" --center_x 96.45750000000001 --center_y 95.3345 --center_z 105.83800000000001 --size_x 58.20700000000001 --size_y 78.10900000000001 --size_z 126.648 --out "A_results\\PGSC0003DMT400002062_1.pdbqt_out.pdbqt" --log "A_results\\PGSC0003DMT400002062_1.pdbqt_log.txt" --exhaustiveness 24
+ 2022  python3 receptor_kutu_boyutu_belirle.py 
+ 2023  python3 commands.py
+ 2024  chmod a+x run_commands.sh 
+ 2025  ./run_commands.sh 
+ 2026  python3 commands.py
+ 2027  ./run_commands.sh 
+ 2028  python3 commands.py
+ 2029  ./vina.exe --receptor "C:\\Users\meow2\Downloads\firat_dock\pdbqt\1.pdbqt" --ligand "C:\\Users\meow2\Downloads\firat_dock\ligand\ligand.pdbqt" --center_x 84.059 --center_y 78.881 --center_z 80.8175 --size_x 65.906 --size_y 82.55000000000001 --size_z 91.20700000000001 --out "A_results\\1.pdbqt_out.pdbqt" --log "A_results\\1.pdbqt_log.txt" --exhaustiveness 24 
+ 2030  chmod a+x commands.sh
+ 2031  ./commands.sh
+ 2032  history > history2.txt
